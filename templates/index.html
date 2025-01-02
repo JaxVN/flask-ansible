@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quản lý VLAN</title>
+</head>
+<body>
+    <h1>Thay đổi VLAN</h1>
+    <form action="/update_vlan" method="POST">
+        <label for="switch_ip">IP Switch:</label>
+        <input type="text" id="switch_ip" name="switch_ip" required><br><br>
+        
+        <label for="interface">Interface:</label>
+        <input type="text" id="interface" name="interface" required><br><br>
+        
+        <label for="vlan">VLAN ID:</label>
+        <input type="text" id="vlan" name="vlan" required><br><br>
+        
+        <button type="submit">Thay đổi VLAN</button>
+    </form>
+</body>
+</html>
