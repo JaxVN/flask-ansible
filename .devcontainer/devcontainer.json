@@ -1,0 +1,13 @@
+{
+    "name": "Flask Devcontainer",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "forwardPorts": [5000],
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "ms-python.python"
+    ]
+}
