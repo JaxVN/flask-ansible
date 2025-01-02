@@ -1,21 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Quản lý VLAN</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Management</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
-    <h1>Thay đổi VLAN</h1>
-    <form action="/update_vlan" method="POST">
-        <label for="switch_ip">IP Switch:</label>
-        <input type="text" id="switch_ip" name="switch_ip" required><br><br>
-        
-        <label for="interface">Interface:</label>
-        <input type="text" id="interface" name="interface" required><br><br>
-        
-        <label for="vlan">VLAN ID:</label>
-        <input type="text" id="vlan" name="vlan" required><br><br>
-        
-        <button type="submit">Thay đổi VLAN</button>
-    </form>
+    <h1>Device Management</h1>
+    <div id="device-form">
+        <h2>Add Device</h2>
+        <form id="add-device-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br>
+            <label for="ip_address">IP Address:</label>
+            <input type="text" id="ip_address" name="ip_address"><br>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br>
+            <label for="os">OS:</label>
+            <input type="text" id="os" name="os"><br>
+            <button type="submit">Add Device</button>
+        </form>
+    </div>
+    <div id="devices"></div>
+    <script>
+        async function fetchDevices() {
+            const response = await fetch('/devices');
+            const devices = await response.json();
+            let html = '<table><tr><th>Name</th><th>IP Address</th><th>Username</th><th>OS</th><th>Actions</th></tr>';
+            devices.forEach(device => {
+                html += `<tr>
+                            <td>${device[1]}</td>
+                            <td>${device[2]}</td>
+                            <td>${device[3]}</td>
+                            <td>${device[4]}</td>
+                            <td>
+                                <button onclick="editDevice(${device[0]})">Edit</button>
+                                <button onclick="deleteDevice(${device[0]})">Delete</button>
+                            </td>
+                        </tr>`;
+            });
+            html += '</table>';
+            document.getElementById('devices').innerHTML = html;
+        }
+
+        async function addDevice(event) {
+            event.preventDefault();
+            const formData = new FormData(document.getElementById('add-device-form'));
+            const data = Object.fromEntries(formData.entries());
+            const response = await fetch('/devices', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                fetchDevices();
+            }
+        }
+
+        async function deleteDevice(id) {
+            const response = await fetch(`/devices/${id}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                fetchDevices();
+            }
+        }
+
+        document.getElementById('add-device-form').addEventListener('submit', addDevice);
+        fetchDevices();
+    </script>
 </body>
 </html>
