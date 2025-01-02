@@ -1,0 +1,15 @@
+---
+- name: Change VLAN on switch
+  hosts: switches
+  gather_facts: no
+
+  tasks:
+    - name: Configure VLAN
+      ios_config:
+        lines:
+          - interface {{ interface }}
+          - switchport access vlan {{ vlan_id }}
+        provider:
+          host: "{{ switch_ip }}"
+          username: "{{ ansible_user }}"
+          password: "{{ ansible_password }}"
