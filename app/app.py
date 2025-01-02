@@ -1,8 +1,12 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import os
 import subprocess
 
 app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/change-vlan', methods=['POST'])
 def change_vlan():
@@ -16,8 +20,8 @@ def change_vlan():
 
     # Run the Ansible Playbook
     command = [
-        "ansible-playbook", "ansible/playbook.yml",
-        "-i", "ansible/inventory.ini",
+        "ansible-playbook", "/ansible/playbook.yml",
+        "-i", "/ansible/inventory.ini",
         "--extra-vars", f"interface={interface} vlan_id={vlan_id} switch_ip={switch_ip}"
     ]
 
