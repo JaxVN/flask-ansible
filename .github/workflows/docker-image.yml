@@ -39,4 +39,5 @@ jobs:
       run: docker run --rm ${{ secrets.DOCKER_USERNAME }}/flask-ansible:latest pytest tests/
 
     - name: Push Docker image
+      if: success() # Chỉ push khi các bước trước đó thành công
       run: docker push ${{ secrets.DOCKER_USERNAME }}/flask-ansible:latest

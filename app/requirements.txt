@@ -1,2 +1,8 @@
 Flask
+<<<<<<< HEAD
+=======
+pytest
+pytest-flask
+werkzeug
+>>>>>>> 7642789c254d6d861438fb39b0c47c5cd1332f0f
 ansible
