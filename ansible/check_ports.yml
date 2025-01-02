@@ -1,0 +1,13 @@
+---
+- name: Check Ports
+  hosts: switches
+  gather_facts: no
+  tasks:
+    - name: Gather Port information
+      ios_command:
+        commands:
+          - show interfaces status | include {{ interface }}
+      register: port_output
+
+    - debug:
+        msg: "{{ port_output.stdout_lines }}"

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  flask-ansible:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./ansible:/ansible
+
+  check-ports:
+    build:
+      context: ./check_ports
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./ansible:/ansible
